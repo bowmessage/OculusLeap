@@ -70,7 +70,7 @@ function init() {
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
     OAuth.popup('flickr', {}, function(error, result) {
         console.log(result)
-        var hasOAUTH = true;
+        hasOAUTH = true;
 
         setPhotos();
 
