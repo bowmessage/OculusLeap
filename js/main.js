@@ -4,18 +4,54 @@ function init() {
         var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
         var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
         var position       = new OpenLayers.LonLat(13.41,52.52).transform( fromProjection, toProjection);
-        var zoom           = 15; 
+        var zoom           = 3; 
  
         map.addLayer(mapnik);
         map.setCenter(position, zoom );
+
+        OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58');
+        OAuth.popup("twitter").done(function(result) { //OAuth.io provider
+    console.log(result)
+})
       }
 
 
 
-var app = angular.module('myApp', ['ngTwitter']);
+var app = angular.module('myApp', ['ngResource']);
 
-app.controller('mainCtrl', ['$scope', function($scope) {
+app.factory('twitter', function ($resource, $http) {
+            var consumerKey = encodeURIComponent('nBIQFWOypdKwQyRpXSiAAEsB6')
+            var consumerSecret = encodeURIComponent('47BXF7Tw5A1d96mNeyFGAtJjiC0dYGxqTBpVOgRalyuVDaWadl')
+            var credentials = btoa(consumerKey + ':' + consumerSecret)
+            // Twitters OAuth service endpoint
+            var twitterOauthEndpoint = $http.post(
+                'https://api.twitter.com/oauth2/token'
+                , "grant_type=client_credentials"
+                , {headers: {'Authorization': 'Basic ' + credentials, 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}}
+            )
+            twitterOauthEndpoint.success(function (response) {
+                // a successful response will return
+                // the "bearer" token which is registered
+                // to the $httpProvider
+                app.$httpProvider.defaults.headers.common['Authorization'] = "Bearer " + response.access_token
+            }).error(function (response) {
+                  // error handling to some meaningful extent
+                })
+ 
+            var r = $resource('https://api.twitter.com/1.1/search/:action',
+                {action: 'tweets.json',
+                    count: 10,
+                },
+                {
+                     paginate: {method: 'JSONP'}
+                })
+ 
+            return r;
+        });
+
+app.controller('mainCtrl', ['$scope', 'twitter', function($scope, twitter) {
   $scope.double = function(value) { return value * 2; };
+  //$scope.tweets = twitter.tweets.json;
 }]);
 
 /* global angular, DeviceManager, RiftSandbox, Mousetrap */
