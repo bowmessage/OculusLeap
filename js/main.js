@@ -67,6 +67,12 @@ function init() {
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
     OAuth.popup('flickr', {}, function(error, result) {
         console.log(result)
+
+
+        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&format=rest&auth_token="+result.oauth_token+"&api_sig="+result.oauth_token_secret, function(data){
+            console.log(data);
+        })
+
         result.get({
             url: 'https://api.flickr.com/services/rest/?method=flickr.photos.search',
             data: {
