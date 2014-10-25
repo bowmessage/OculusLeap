@@ -71,7 +71,7 @@ function init() {
 
         $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox=-30%2C-30%2C-7%2C-7&has_geo=1&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=49caa99e5a35471faac6616f00c28997", function(data){
             console.log(data);
-            var lim = 10;
+            var lim = 20;
             var i = 0;
             $.each(data.photos.photo, function(k, v) {
                 if (i < lim) {
