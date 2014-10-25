@@ -69,7 +69,6 @@ function init() {
         console.log(result)
         result.get({url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
             data: {
-                text: "flower",
                 bbox: "-30,-30,-8,-8"
             }
         }).done(function(data) {
