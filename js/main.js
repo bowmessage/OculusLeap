@@ -77,7 +77,7 @@ function init() {
                 if (i < lim) {
                     var j = k+2;
                     var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_b.jpg";
-                    $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('border', '1px solid black').css('transform', 'rotateY('+(j*22.5)+'deg) translate3d('+(Math.round(Math.sin(j*Math.PI/8)*800))+'px, -200px, '+(Math.round(Math.cos(j*Math.PI/8)*800))+'px) '));
+                    $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('border', '1px solid black').css('transform', 'rotateY('+(j*28)+'deg) translate3d('+(Math.round(Math.sin(j*Math.PI/8)*800))+'px, -200px, '+(Math.round(Math.cos(j*Math.PI/8)*800))+'px) '));
 
                 }
 
