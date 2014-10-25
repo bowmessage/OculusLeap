@@ -80,8 +80,8 @@ function init() {
 
             var features = [];
             var i;
-            for (i = 0; i < data.length; i++) {
-                var val = data[i];
+            for (i = 0; i < data.statuses.length; i++) {
+                var val = data.statuses[i];
                 var pt = new OpenLayers.Geometry.Point(val.lon, val.lat);
                 pt.transform(
                     new OpenLayers.Projection("EPSG:4326"),
