@@ -75,7 +75,12 @@ function init() {
         setPhotos();
 
 
+        // do some stuff with result
+
+
     })
+
+
 }
 
 
@@ -120,14 +125,14 @@ app.controller('mainCtrl', ['$scope',
     }
 ]);
 
-function setPhotos(){
+function setPhotos() {
     $("#rotatingImages").empty();
-    if(hasOAUTH) {
+    if (hasOAUTH) {
         var x = Math.round(Math.random() * 90 - 90);
         var y = Math.round(Math.random() * 90);
         console.log(x)
         console.log(y)
-        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox="+x+"%2C"+x+"%2C"+y+"%2C"+y+"&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=d09942fbdb4fb123409e37331a909412", function(data) {
+        /*$.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox="+x+"%2C"+x+"%2C"+y+"%2C"+y+"&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=d09942fbdb4fb123409e37331a909412", function(data) {
             console.log(data);
             var lim = 7;
             var i = 0;
@@ -144,6 +149,42 @@ function setPhotos(){
                 i++;
 
             })
+        })*/
+        result.get({
+            url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
+            data: {
+                bbox: "-20,-20,-5,-5"
+            }
+        }).done(function(data) {
+            //var template = Handlebars.compile($('#entry-template').html())
+            //var content = template({
+            //    statuses: data.statuses
+            //})
+            //$('#search-res').html(content)
+            console.log('done!')
+
+            console.log(data)
+            /*
+            var features = [];
+            var i;
+            for (i = 0; i < data.statuses.length; i++) {
+                var val = data.statuses[i];
+                var pt = new OpenLayers.Geometry.Point(val.lon, val.lat);
+                pt.transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    new OpenLayers.Projection("EPSG:900913")
+                );
+                features.push(
+                    new OpenLayers.Feature.Vector(
+                        pt, {
+                            text: val.text
+                        }
+                    )
+                );
+            }*/
+        }).error(function(err) {
+            console.log('err');
+            console.log(err)
         })
     }
 }
