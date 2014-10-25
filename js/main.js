@@ -69,12 +69,12 @@ function init() {
         console.log(result)
 
 
-        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&format=rest&auth_token="+result.oauth_token+"&api_sig="+result.oauth_token_secret, function(data){
+        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox=-30%2C-30%2C-7%2C-7&has_geo=1&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=49caa99e5a35471faac6616f00c28997", function(data){
             console.log(data);
         })
 
         result.get({
-            url: 'https://api.flickr.com/services/rest/?method=flickr.photos.search',
+            url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
             data: {
                 bbox: "-20,-20,-5,-5",
                 has_geo: "1"
@@ -105,7 +105,7 @@ function init() {
                     )
                 );
             }*/
-        }).error(function(err){console.log(err)})
+        }).error(function(err){console.log('err') console.log(err)})
         // do some stuff with result
     })
 }
