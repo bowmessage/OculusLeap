@@ -183,6 +183,7 @@ function setPhotos() {
 
 
     }
+}
 
     /* global angular, DeviceManager, RiftSandbox, Mousetrap */
     (function() {
