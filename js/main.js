@@ -76,7 +76,7 @@ function init() {
             $.each(data.photos.photo, function(k, v) {
                 if (i < lim) {
                     var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_m.jpg";
-                    $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('transform', 'rotateY(0deg) translate3d(-'+(Math.random()*600 - 300)+'px, 0px, '+(Math.random()*200 - 200)+'px) translate(-100px, -150px);'));
+                    $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('transform', 'rotateY(0deg) translate3d('+(Math.random()*600 - 300)+'px, 0px, -100px) translate(-100px, -150px);'));
 
                 }
 
