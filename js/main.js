@@ -49,9 +49,8 @@ app.factory('twitter', function ($resource, $http) {
             return r;
         });
 */
-app.controller('mainCtrl', ['$scope', 'twitter', function($scope, twitter) {
+app.controller('mainCtrl', ['$scope', function($scope) {
   $scope.double = function(value) { return value * 2; };
-  //$scope.tweets = twitter.tweets.json;
 }]);
 
 /* global angular, DeviceManager, RiftSandbox, Mousetrap */
