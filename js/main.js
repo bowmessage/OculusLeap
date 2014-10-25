@@ -123,7 +123,9 @@ app.controller('mainCtrl', ['$scope',
 function setPhotos(){
     $("#rotatingImages").empty();
     if(hasOAUTH) {
-        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox=-30%2C-30%2C-7%2C-7&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=d09942fbdb4fb123409e37331a909412", function(data) {
+        var x = Math.round(Math.random() * 180 - 90);
+        var y = Math.round(Math.random() * 180 - 90);
+        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox="+x+"%2C"+x+"%2C"+y+"%2C"+y+"&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=d09942fbdb4fb123409e37331a909412", function(data) {
             console.log(data);
             var lim = 7;
             var i = 0;
