@@ -424,28 +424,26 @@ app.controller('mainCtrl', ['$scope',
                 var pinchStartCameraPosition = new THREE.Vector3(0, 0, 0);
                 var pinchThreshold = 0.9;
 
-                window.scene = this.riftSandbox.scene;
-
                 window.renderer = null;
 
                 window.camera = null;
 
-                initScene = function(element) {
+                initScene = function(sandbox, element) {
                     THREE.ImageUtils.crossOrigin = '';
                     var axis, pointLight;
-                    window.renderer = new THREE.WebGLRenderer({
+                    /*window.renderer = new THREE.WebGLRenderer({
                         alpha: true
-                    });
-                    renderer.setClearColor(0x000000, 1);
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                    element.appendChild(renderer.domElement);
+                    });*/
+                    //renderer.setClearColor(0x000000, 1);
+                    //renderer.setSize(window.innerWidth, window.innerHeight);
+                    //element.appendChild(renderer.domElement);
                     axis = new THREE.AxisHelper(5);
-                    scene.add(axis);
-                    scene.add(new THREE.AmbientLight(0x888888));
+                    sandbox.scene.add(axis);
+                    sandbox.scene.add(new THREE.AmbientLight(0x888888));
                     pointLight = new THREE.PointLight(0x888888);
                     //pointLight.position = new THREE.Vector3(-20, 10, 0);
                     pointLight.lookAt(new THREE.Vector3(0, 0, 0));
-                    scene.add(pointLight);
+                    sandbox.scene.add(pointLight);
 
                     var geometry = new THREE.BoxGeometry(100, 80, 1);
                     var material = new THREE.MeshPhongMaterial({
@@ -460,7 +458,7 @@ app.controller('mainCtrl', ['$scope',
                     mesh.position.set(0, 0, -10);
 
 
-                    scene.add(mesh);
+                    sandbox.scene.add(mesh);
                     sprite.scale.set(150, 100, 100);
 
                     //scene.add( sprite );  
@@ -470,20 +468,20 @@ app.controller('mainCtrl', ['$scope',
                     //material.position.set( 0, 0, 0);
                     //scene.add(material);
 
-                    window.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-                    camera.position.fromArray([0, 0, 20]);
-                    camera.lookAt(cameraTarget);
-                    window.controls = new THREE.TrackballControls(camera);
-                    scene.add(camera);
+                    //window.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+                    sandbox.camera.position.fromArray([0, 0, 20]);
+                    sandbox.camera.lookAt(cameraTarget);
+                    window.controls = new THREE.TrackballControls(sandbox.camera);
+                    sandbox.scene.add(sandbox.camera);
 
                     window.addEventListener('resize', function() {
-                        camera.aspect = window.innerWidth / window.innerHeight;
-                        camera.updateProjectionMatrix();
-                        renderer.setSize(window.innerWidth, window.innerHeight);
+                        sandbox.camera.aspect = window.innerWidth / window.innerHeight;
+                        sandbox.camera.updateProjectionMatrix();
+                        sandbox.renderer.setSize(window.innerWidth, window.innerHeight);
                         controls.handleResize();
-                        return renderer.render(scene, camera);
+                        return sandbox.renderer.render(sandbox.scene, sandbox.camera);
                     }, false);
-                    return renderer.render(scene, camera);
+                    return sandbox.renderer.render(sandbox.scene, sandbox.camera);
                 };
 
                 // via Detector.js:
@@ -497,7 +495,7 @@ app.controller('mainCtrl', ['$scope',
                 })();
 
                 if (webglAvailable) {
-                    initScene(document.body);
+                    initScene(this.riftSandbox, document.body);
                 }
 
                 stats = new Stats();
@@ -585,13 +583,13 @@ app.controller('mainCtrl', ['$scope',
                 controller.use('handHold').use('transform', {
                     position: new THREE.Vector3(1, 0, 0)
                 }).use('handEntry').use('screenPosition').use('riggedHand', {
-                    parent: scene,
-                    renderer: renderer,
+                    parent: this.riftSandbox.scene,
+                    renderer: this.riftSandbox.renderer,
                     scale: getParam('scale'),
                     positionScale: getParam('positionScale'),
                     offset: new THREE.Vector3(0, 0, 0),
                     renderFn: function() {
-                        renderer.render(scene, camera);
+                        this.renderer.render(this.parent, camera);
                         return controls.update();
                     },
                     materialOptions: {
@@ -645,7 +643,7 @@ app.controller('mainCtrl', ['$scope',
 
                 if (getParam('scenePosition')) {
                     window.sphere = new THREE.Mesh(new THREE.SphereGeometry(1), new THREE.MeshBasicMaterial(0xff0000));
-                    scene.add(sphere);
+                    this.riftSandbox.scene.add(sphere);
                     controller.on('frame', function(frame) {
                         var hand, handMesh;
                         if (hand = frame.hands[0]) {
