@@ -753,7 +753,7 @@ app.controller('mainCtrl', ['$scope',
                     positionScale: getParam('positionScale'),
                     offset: new THREE.Vector3(0, 0, 0),
                     renderFn: function() {
-                        this.renderer.render(this.parent, this.camera);
+                        //this.renderer.render(this.parent, this.camera);
                         return controls.update();
                     },
                     materialOptions: {
