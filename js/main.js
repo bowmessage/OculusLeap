@@ -8,7 +8,7 @@ function init() {
 
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
-/*
+    /*
     var style = new OpenLayers.Style({
         pointRadius: "${radius}",
         fillColor: "#ffcc66",
@@ -67,9 +67,31 @@ function init() {
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
     OAuth.popup('flickr', {}, function(error, result) {
         console.log(result)
-        result.get({url: 'https://api.flickr.com/services/rest/?method=flickr.photos.search',
+
+
+        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox=-30%2C-30%2C-7%2C-7&has_geo=1&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=49caa99e5a35471faac6616f00c28997", function(data){
+            console.log(data);
+            var lim = 10;
+            var i = 0;
+            $.each(data.photos.photo, function(k, v) {
+                if (i < lim) {
+                    var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_m.jpg";
+                    $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('border', '1px solid black').css('transform', 'rotateY(20deg) translate3d('+(Math.round(Math.random()*600) - 300)+'px, 100px, 100px) translate(100px, 150px)'));
+
+                }
+
+
+
+                i++;
+
+            })
+        })
+
+        result.get({
+            url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
             data: {
-                bbox: "-30,-30,-8,-8"
+                bbox: "-20,-20,-5,-5",
+                has_geo: "1"
             }
         }).done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
@@ -77,10 +99,10 @@ function init() {
             //    statuses: data.statuses
             //})
             //$('#search-res').html(content)
-
+            console.log('done!')
 
             console.log(data)
-
+            /*
             var features = [];
             var i;
             for (i = 0; i < data.statuses.length; i++) {
@@ -97,8 +119,11 @@ function init() {
                         }
                     )
                 );
-            }
-        }).error(function(err){console.log(err)})
+            }*/
+        }).error(function(err) {
+            console.log('err');
+            console.log(err)
+        })
         // do some stuff with result
     })
 }
@@ -509,13 +534,10 @@ app.controller('mainCtrl', ['$scope',
 
                 var pinching = false;
                 var zooming = false;
-                var canZoom = true;
                 var startDistance;
-                var startZoomLevel;
                 var pinchStartPosition = new THREE.Vector3(0, 0, 0);
                 var pinchStartCameraPosition = new THREE.Vector3(0, 0, 0);
-                var pinchThreshold = 0.85;
-                var zoomThreshold = 0.6
+                var pinchThreshold = 0.9;
 
                 window.renderer = null;
 
@@ -631,25 +653,19 @@ app.controller('mainCtrl', ['$scope',
 
                         if (hand.pinchStrength > pinchThreshold && !pinching) {
                             pinching = true;
-                            var hand1 = hand.fingers[1];
-                            var hand2 = hand.fingers[0];
-                            var p1 = hand1.dipPosition;
-                            var p2 = hand2.dipPosition;
-                            pinchStartPosition.set((p1[0] + p2[0])/2, (p1[1] + p2[1])/2, (p1[2] + p2[2])/2);
-                            pinchStartPosition.round();
-
+                            var pinchingFinger = findPinchingFingerType(hand);
+                            var p = pinchingFinger.dipPosition;
+                            pinchStartPosition.set(p[0], p[1], p[2]);
+                            console.log(p);
                             var cp = camera.position;
                             pinchStartCameraPosition.copy(cp);
                             pinchStartCameraTarget.copy(cameraTarget);
                             console.log("Starting pinch, Camera position:" + pinchStartCameraPosition.x + ',' + pinchStartCameraPosition.y + ',' + pinchStartCameraPosition.z);
                         } else if (hand.pinchStrength > pinchThreshold && pinching) {
 
-                            var hand1 = hand.fingers[1];
-                            var hand2 = hand.fingers[0];
-                            var p1 = hand1.dipPosition;
-                            var p2 = hand2.dipPosition;
-                            var newFingerPosition = new THREE.Vector3(0,0,0);
-                            newFingerPosition.set((p1[0] + p2[0])/2, (p1[1] + p2[1])/2, (p1[2] + p2[2])/2);
+                            var pinchingFinger = findPinchingFingerType(hand);
+                            var newp = pinchingFinger.dipPosition;
+                            var newFingerPosition = new THREE.Vector3(newp[0], newp[1], newp[2]);
 
                             var movementThisFrame = new THREE.Vector3(0, 0, 0);
                             if (prevPosition != null) {
@@ -691,8 +707,7 @@ app.controller('mainCtrl', ['$scope',
                         var hand1 = frame.hands[0];
                         var hand2 = frame.hands[1];
 
-                        if (hand1.pinchStrength > zoomThreshold && hand2.pinchStrength > zoomThreshold  && !zooming) {
-
+                        if (hand1.pinchStrength > pinchThreshold && hand1.pinchStrength > pinchThreshold && !zooming) {
                             zooming = true;
                             var finger1 = findPinchingFingerType(hand1);
                             var finger2 = findPinchingFingerType(hand2);
@@ -705,10 +720,9 @@ app.controller('mainCtrl', ['$scope',
 
                             startDistance = tempPosition1.length();
 
-                            startZoomLevel = window.map.getZoom();
-                        }
-                        else if (hand1.pinchStrength > zoomThreshold && hand2.pinchStrength > zoomThreshold  && zooming) {
-                            
+
+                        } else if (hand1.pinchStrength > pinchThreshold && hand1.pinchStrength > pinchThreshold && zooming) {
+
                             var finger1 = findPinchingFingerType(hand1);
                             var finger2 = findPinchingFingerType(hand2);
 
@@ -720,32 +734,12 @@ app.controller('mainCtrl', ['$scope',
 
                             var newDistance = tempPosition1.length();
 
-                            var distanceOffset = Math.floor((newDistance - startDistance)/35);
+                            var distanceOffset = newDistance - startDistance;
 
-                            var zoomLevel = startZoomLevel + distanceOffset;
-                            if(zoomLevel > 18) {
-                                zoomLevel = 18;
-                            }
-                            else if(zoomLevel < 1) {
-                                zoomLevel = 1;
-                            }
-                            
-                            if(canZoom) {
-                                window.map.zoomTo(zoomLevel);
-                                canZoom = false;
-                                setTimeout(function() {
-                                    canZoom = true;
-                                }, 800);
-                            }
+                            console.log("Distance: " + distanceOffset);
 
+                            window.map.zoomTo(window.map.getZoom() + distanceOffset / 150);
 
-                            console.log("Set zoomLevel: " + zoomLevel + ', getZoom() = ' + window.map.getZoom());
-                            
-
-                        }
-
-                        else {
-                            zooming = false;
                         }
                     }
                 });

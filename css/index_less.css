@@ -89,3 +89,10 @@ div#basicMap{
   display: block;
   font-size: 12pt;
 }
+/*
+#container.not-fullscreen #rotatingImages img{
+  transform: translate(0,0);
+}
+#rotatingImages img{
+  transform: rotateY(0deg) translate3d(-300px, 0px, 200px) translate(-100px, -150px);
+}*/
