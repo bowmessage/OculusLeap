@@ -98,7 +98,7 @@ function init() {
                     )
                 );
             }*/
-        })//.error(function(err){console.log(err)})
+        }).error(function(err){console.log(err)})
         // do some stuff with result
     })
 }
