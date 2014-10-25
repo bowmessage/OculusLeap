@@ -72,7 +72,7 @@ function init() {
         console.log(result)
         hasOAUTH = true;
 
-        setPhotos();
+        setPhotos(result);
 
 
         // do some stuff with result
@@ -125,7 +125,7 @@ app.controller('mainCtrl', ['$scope',
     }
 ]);
 
-function setPhotos() {
+function setPhotos(result) {
     $("#rotatingImages").empty();
     if (hasOAUTH) {
         var x = Math.round(Math.random() * 90 - 90);
