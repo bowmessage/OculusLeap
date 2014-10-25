@@ -1,5 +1,5 @@
 function init() {
-    map = new OpenLayers.Map("basicMap");
+    window.map = new OpenLayers.Map("basicMap");
     var mapnik = new OpenLayers.Layer.OSM();
     var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
     var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
@@ -168,14 +168,14 @@ app.controller('mainCtrl', ['$scope',
                     x: 0,
                     y: 0
                 };
-                window.addEventListener(
+                /*window.addEventListener(
                     'mousemove',
                     function(e) {
                         mousePos.x = e.clientX;
                         mousePos.y = e.clientY;
                     },
                     false
-                );
+                );*/
 
                 this.sketchLoop = function() {};
 
@@ -426,7 +426,7 @@ app.controller('mainCtrl', ['$scope',
 
                 window.renderer = null;
 
-                window.camera = null;
+                window.camera = this.riftSandbox.camera;
 
                 initScene = function(sandbox, element) {
                     THREE.ImageUtils.crossOrigin = '';
@@ -445,21 +445,9 @@ app.controller('mainCtrl', ['$scope',
                     pointLight.lookAt(new THREE.Vector3(0, 0, 0));
                     sandbox.scene.add(pointLight);
 
-                    var geometry = new THREE.BoxGeometry(100, 80, 1);
-                    var material = new THREE.MeshPhongMaterial({
-                        map: THREE.ImageUtils.loadTexture('http://i.imgur.com/vMXXnOB.jpg')
-                    });
-                    var mesh = new THREE.Mesh(geometry, material);
-
                     //var map = THREE.ImageUtils.loadTexture("http://i.imgur.com/vMXXnOB.jpg");
                     //var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
-                    var sprite = new THREE.Sprite(material);
-
-                    mesh.position.set(0, 0, -10);
-
-
-                    sandbox.scene.add(mesh);
-                    sprite.scale.set(150, 100, 100);
+                    
 
                     //scene.add( sprite );  
 
@@ -474,14 +462,14 @@ app.controller('mainCtrl', ['$scope',
                     window.controls = new THREE.TrackballControls(sandbox.camera);
                     sandbox.scene.add(sandbox.camera);
 
-                    window.addEventListener('resize', function() {
+                    /*window.addEventListener('resize', function() {
                         sandbox.camera.aspect = window.innerWidth / window.innerHeight;
                         sandbox.camera.updateProjectionMatrix();
                         sandbox.renderer.setSize(window.innerWidth, window.innerHeight);
                         controls.handleResize();
                         return sandbox.renderer.render(sandbox.scene, sandbox.camera);
                     }, false);
-                    return sandbox.renderer.render(sandbox.scene, sandbox.camera);
+                    return sandbox.renderer.render(sandbox.scene, sandbox.camera);*/
                 };
 
                 // via Detector.js:
@@ -507,6 +495,8 @@ app.controller('mainCtrl', ['$scope',
                 stats.domElement.style.top = '0px';
 
                 document.body.appendChild(stats.domElement);
+
+                var prevPosition = null;
 
                 window.controller = controller = Leap.loop({
                     enableGestures: true
@@ -544,6 +534,7 @@ app.controller('mainCtrl', ['$scope',
                     //// PINCHING //////////////
                     if (frame.hands.length > 0) {
                         var hand = frame.hands[0];
+                        
 
                         if (hand.pinchStrength > pinchThreshold && !pinching) {
                             pinching = true;
@@ -556,26 +547,45 @@ app.controller('mainCtrl', ['$scope',
                             pinchStartCameraTarget.copy(cameraTarget);
                             console.log("Starting pinch, Camera position:" + pinchStartCameraPosition.x + ',' + pinchStartCameraPosition.y + ',' + pinchStartCameraPosition.z);
                         } else if (hand.pinchStrength > pinchThreshold && pinching) {
+
                             var pinchingFinger = findPinchingFingerType(hand);
                             var newp = pinchingFinger.dipPosition;
                             var newFingerPosition = new THREE.Vector3(newp[0], newp[1], newp[2]);
 
+                            var movementThisFrame = new THREE.Vector3(0, 0, 0);
+                            if(prevPosition != null){
+                                movementThisFrame.copy(newFingerPosition).sub(prevPosition).multiplyScalar(4);
+                                //console.log("newFingerPosition:" + newFingerPosition.x + ',' + newFingerPosition.y + ',' + newFingerPosition.z);
+                                //console.log("prevPosition:" + prevPosition.x + ',' + prevPosition.y + ',' + prevPosition.z);
+                            } else {
+                                prevPosition = new THREE.Vector3(0, 0, 0);
+                            }
+                            prevPosition.copy(newFingerPosition);
+
                             var fingerOffset = newFingerPosition.sub(pinchStartPosition).multiplyScalar(1);
                             fingerOffset.setZ(0);
+
+                            
 
                             //console.log("Offset:" + fingerOffset.x + ',' + fingerOffset.y + ',' + fingerOffset.z);
                             var cp = new THREE.Vector3(0, 0, 0);
                             cp.copy(pinchStartCameraPosition).add(fingerOffset).round();
+
+                            
                             //console.log("Camera position:" + pinchStartCameraPosition.x + ',' + pinchStartCameraPosition.y + ',' + pinchStartCameraPosition.z);
-                            camera.position.copy(cp);
+                            //camera.position.copy(cp);
 
                             var ct = new THREE.Vector3(0, 0, 0);
                             ct.copy(pinchStartCameraTarget).add(fingerOffset.multiplyScalar(0.9)).round();
+
+                            window.map.moveByPx(-movementThisFrame.x, movementThisFrame.y);
+
                             camera.lookAt(ct);
                             cameraTarget.copy(ct);
-                            console.log("Setting camera target:" + cameraTarget.x + ',' + cameraTarget.y + ',' + cameraTarget.z);
+                            //console.log("Setting camera target:" + movementThisFrame.x + ',' + movementThisFrame.y + ',' + movementThisFrame.z);
                         } else if (hand.pinchStrength <= pinchThreshold && pinching) {
                             pinching = false;
+                            prevPosition = null;
                         }
                     }
                 });
@@ -587,9 +597,9 @@ app.controller('mainCtrl', ['$scope',
                     renderer: this.riftSandbox.renderer,
                     scale: getParam('scale'),
                     positionScale: getParam('positionScale'),
-                    offset: new THREE.Vector3(0, 0, 0),
+                    offset: new THREE.Vector3(0, 0, 50),
                     renderFn: function() {
-                        this.renderer.render(this.parent, camera);
+                        //this.renderer.render(this.parent, this.camera);
                         return controls.update();
                     },
                     materialOptions: {
@@ -597,7 +607,7 @@ app.controller('mainCtrl', ['$scope',
                     },
                     dotsMode: getParam('dots'),
                     stats: stats,
-                    camera: camera,
+                    camera: this.riftSandbox.camera,
                     boneLabels: function(boneMesh, leapHand) {
                         if (boneMesh.name.indexOf('Finger_03') === 0) {
                             return leapHand.pinchStrength;
@@ -666,3 +676,18 @@ app.controller('mainCtrl', ['$scope',
 
 
 }());
+function findPinchingFingerType(hand){
+    var pincher;
+    var closest = 500;
+    for(var f = 1; f < 5; f++)
+    {
+        current = hand.fingers[f];
+        distance = Leap.vec3.distance(hand.thumb.tipPosition, current.tipPosition);
+        if(current != hand.thumb && distance < closest)
+        {
+            closest = distance;
+            pincher = current; 
+        }
+    } 
+    return pincher;
+}
