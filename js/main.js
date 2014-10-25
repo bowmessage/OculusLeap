@@ -18,7 +18,7 @@ function init() {
 
 
 var app = angular.module('myApp', ['ngResource']);
-
+/*
 app.factory('twitter', function ($resource, $http) {
             var consumerKey = encodeURIComponent('nBIQFWOypdKwQyRpXSiAAEsB6')
             var consumerSecret = encodeURIComponent('47BXF7Tw5A1d96mNeyFGAtJjiC0dYGxqTBpVOgRalyuVDaWadl')
@@ -48,7 +48,7 @@ app.factory('twitter', function ($resource, $http) {
  
             return r;
         });
-
+*/
 app.controller('mainCtrl', ['$scope', 'twitter', function($scope, twitter) {
   $scope.double = function(value) { return value * 2; };
   //$scope.tweets = twitter.tweets.json;
