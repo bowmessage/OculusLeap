@@ -757,9 +757,9 @@ app.controller('mainCtrl', ['$scope',
                     renderer: this.riftSandbox.renderer,
                     scale: getParam('scale'),
                     positionScale: getParam('positionScale'),
-                    offset: new THREE.Vector3(0, 0, 50),
+                    offset: new THREE.Vector3(0, 0, 0),
                     renderFn: function() {
-                        //this.renderer.render(this.parent, this.camera);
+                        this.renderer.render(this.parent, this.camera);
                         return controls.update();
                     },
                     materialOptions: {
