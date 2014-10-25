@@ -8,7 +8,7 @@ function init() {
 
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
-/*
+    /*
     var style = new OpenLayers.Style({
         pointRadius: "${radius}",
         fillColor: "#ffcc66",
@@ -73,15 +73,15 @@ function init() {
             console.log(data);
             var lim = 10;
             var i = 0;
-            $.forEach(data.photos.photo, function(k,v){
-                if(i < lim){
-var src = "https://farm"+v.farm+".staticflickr.com/"+v.server+"/"+v.id+"_"+v.secret+"_o.png";
+            $.each(data.photos.photo, function(k, v) {
+                if (i < lim) {
+                    var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_o.png";
 
-                $("#rotatingImages").append($(new Image()).attr('src', src));
+                    $("#rotatingImages").append($(new Image()).attr('src', src));
 
                 }
 
-                
+
 
                 i++;
 
@@ -93,7 +93,8 @@ var src = "https://farm"+v.farm+".staticflickr.com/"+v.server+"/"+v.id+"_"+v.sec
             data: {
                 bbox: "-20,-20,-5,-5",
                 has_geo: "1"
-            }}).done(function(data) {
+            }
+        }).done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
             //var content = template({
             //    statuses: data.statuses
@@ -102,7 +103,7 @@ var src = "https://farm"+v.farm+".staticflickr.com/"+v.server+"/"+v.id+"_"+v.sec
             console.log('done!')
 
             console.log(data)
-/*
+            /*
             var features = [];
             var i;
             for (i = 0; i < data.statuses.length; i++) {
@@ -120,7 +121,10 @@ var src = "https://farm"+v.farm+".staticflickr.com/"+v.server+"/"+v.id+"_"+v.sec
                     )
                 );
             }*/
-        }).error(function(err){console.log('err');console.log(err)})
+        }).error(function(err) {
+            console.log('err');
+            console.log(err)
+        })
         // do some stuff with result
     })
 }
