@@ -76,7 +76,8 @@ function init() {
         result.get({
             url: 'https://api.flickr.com/services/rest/?method=flickr.photos.search',
             data: {
-                bbox: "-20,-20,-5,-5"
+                bbox: "-20,-20,-5,-5",
+                has_geo: "1"
             }}).done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
             //var content = template({
