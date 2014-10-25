@@ -1,4 +1,6 @@
 (function() {
+
+
   // http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
   function getParam(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -27,7 +29,7 @@
   initScene = function(element) {
     THREE.ImageUtils.crossOrigin = '';
     var axis, pointLight;
-    window.scene = new THREE.Scene();
+    window.scene = riftSandbox.scene
     window.renderer = new THREE.WebGLRenderer({
       alpha: true
     });
