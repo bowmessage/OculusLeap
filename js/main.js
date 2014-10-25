@@ -73,7 +73,7 @@ function init() {
             //    statuses: data.statuses
             //})
             //$('#search-res').html(content)
-
+            console.log('done!')
 
             console.log(data)
 
