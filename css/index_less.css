@@ -94,5 +94,5 @@ div#basicMap{
   transform: translate(0,0);
 }
 #rotatingImages img{
-  transform: rotateY(0deg) translate3d(-300px, 0px, -200px) translate(100px, 150px);
+  transform: rotateY(0deg) translate3d(-300px, 0px, 200px) translate(-100px, -150px);
 }
