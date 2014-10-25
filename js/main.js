@@ -8,11 +8,103 @@ function init() {
 
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
+/*
+    var style = new OpenLayers.Style({
+        pointRadius: "${radius}",
+        fillColor: "#ffcc66",
+        fillOpacity: 0.8,
+        strokeColor: "#cc6633",
+        strokeWidth: 2,
+        strokeOpacity: 0.8
+    }, {
+        context: {
+            radius: function(feature) {
+                //return 3;
+                //Todo change this to the number of posts or somethin
+                return Math.min(feature.attributes.count, 7) + 3;
+            }
+        }
+    });
 
-    // OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58');
-    // OAuth.popup("twitter").done(function(result) { //OAuth.io provider
-    //     console.log(result)
-    // })
+    var pois = new OpenLayers.Layer.Vector("My Points", {
+        strategies: [
+            new OpenLayers.Strategy.Cluster({
+                distance: 15
+            })
+        ],
+        styleMap: new OpenLayers.StyleMap({
+            "default": style,
+            "select": {
+                fillColor: "#8aeeef",
+                strokeColor: "#32a8a9"
+            }
+        })
+
+    });
+    var select = new OpenLayers.Control.SelectFeature(
+        pois, {
+            hover: true
+        }
+    );
+    map.addControl(select);
+    select.activate();
+    pois.events.on({
+        "featureselected": display
+    });
+
+
+
+    function display(event) {
+        $("#namesdiv").empty();
+        console.log(event.feature.cluster);
+        $.each(event.feature.cluster, function(k, v) {
+            $("#namesdiv").append("<div>" + v.data.schoolName + "</div>");
+        });
+
+    }*/
+
+
+    OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
+    OAuth.popup('flickr', {}, function(error, result) {
+        console.log(result)
+        result.get({url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
+            data: {
+                bbox: "-30,-30,-8,-8"
+            }
+        }).done(function(data) {
+            //var template = Handlebars.compile($('#entry-template').html())
+            //var content = template({
+            //    statuses: data.statuses
+            //})
+            //$('#search-res').html(content)
+
+
+            console.log(data)
+
+            var features = [];
+            var i;
+            for (i = 0; i < data.statuses.length; i++) {
+                var val = data.statuses[i];
+                var pt = new OpenLayers.Geometry.Point(val.lon, val.lat);
+                pt.transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    new OpenLayers.Projection("EPSG:900913")
+                );
+                features.push(
+                    new OpenLayers.Feature.Vector(
+                        pt, {
+                            text: val.text
+                        }
+                    )
+                );
+            }
+
+
+            pois.addFeatures(features);
+            map.addLayer(pois);
+        })
+        // do some stuff with result
+    })
 }
 
 
@@ -452,7 +544,7 @@ app.controller('mainCtrl', ['$scope',
 
                     //var map = THREE.ImageUtils.loadTexture("http://i.imgur.com/vMXXnOB.jpg");
                     //var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
-                    
+
 
                     //scene.add( sprite );  
 
@@ -539,7 +631,7 @@ app.controller('mainCtrl', ['$scope',
                     //// PINCHING //////////////
                     if (frame.hands.length == 1) {
                         var hand = frame.hands[0];
-                        
+
 
                         if (hand.pinchStrength > pinchThreshold && !pinching) {
                             pinching = true;
@@ -564,7 +656,7 @@ app.controller('mainCtrl', ['$scope',
                             newFingerPosition.set((p1[0] + p2[0])/2, (p1[1] + p2[1])/2, (p1[2] + p2[2])/2);
 
                             var movementThisFrame = new THREE.Vector3(0, 0, 0);
-                            if(prevPosition != null){
+                            if (prevPosition != null) {
                                 movementThisFrame.copy(newFingerPosition).sub(prevPosition).multiplyScalar(4);
                                 //console.log("newFingerPosition:" + newFingerPosition.x + ',' + newFingerPosition.y + ',' + newFingerPosition.z);
                                 //console.log("prevPosition:" + prevPosition.x + ',' + prevPosition.y + ',' + prevPosition.z);
@@ -576,13 +668,13 @@ app.controller('mainCtrl', ['$scope',
                             var fingerOffset = newFingerPosition.sub(pinchStartPosition).multiplyScalar(1);
                             fingerOffset.setZ(0);
 
-                            
+
 
                             //console.log("Offset:" + fingerOffset.x + ',' + fingerOffset.y + ',' + fingerOffset.z);
                             var cp = new THREE.Vector3(0, 0, 0);
                             cp.copy(pinchStartCameraPosition).add(fingerOffset).round();
 
-                            
+
                             //console.log("Camera position:" + pinchStartCameraPosition.x + ',' + pinchStartCameraPosition.y + ',' + pinchStartCameraPosition.z);
                             //camera.position.copy(cp);
 
@@ -591,7 +683,7 @@ app.controller('mainCtrl', ['$scope',
 
                             window.map.moveByPx(-movementThisFrame.x, movementThisFrame.y);
 
-                            
+
                             //console.log("Setting camera target:" + movementThisFrame.x + ',' + movementThisFrame.y + ',' + movementThisFrame.z);
                         } else if (hand.pinchStrength <= pinchThreshold && pinching) {
                             pinching = false;
@@ -599,19 +691,20 @@ app.controller('mainCtrl', ['$scope',
                         }
                     }
                     //ZOOMING
-                    else if(frame.hands.length == 2){
+                    else if (frame.hands.length == 2) {
                         var hand1 = frame.hands[0];
                         var hand2 = frame.hands[1];
 
                         if (hand1.pinchStrength > zoomThreshold && hand2.pinchStrength > zoomThreshold  && !zooming) {
+
                             zooming = true;
                             var finger1 = findPinchingFingerType(hand1);
                             var finger2 = findPinchingFingerType(hand2);
 
-                            
-                            var tempPosition1 = new THREE.Vector3(0,0,0);
+
+                            var tempPosition1 = new THREE.Vector3(0, 0, 0);
                             tempPosition1.fromArray(finger1.dipPosition);
-                            var tempPosition2 = new THREE.Vector3(0,0,0);
+                            var tempPosition2 = new THREE.Vector3(0, 0, 0);
                             tempPosition1.sub(tempPosition2.fromArray(finger2.dipPosition));
 
                             startDistance = tempPosition1.length();
@@ -623,10 +716,10 @@ app.controller('mainCtrl', ['$scope',
                             var finger1 = findPinchingFingerType(hand1);
                             var finger2 = findPinchingFingerType(hand2);
 
-                            
-                            var tempPosition1 = new THREE.Vector3(0,0,0);
+
+                            var tempPosition1 = new THREE.Vector3(0, 0, 0);
                             tempPosition1.fromArray(finger1.dipPosition);
-                            var tempPosition2 = new THREE.Vector3(0,0,0);
+                            var tempPosition2 = new THREE.Vector3(0, 0, 0);
                             tempPosition1.sub(tempPosition2.fromArray(finger2.dipPosition));
 
                             var newDistance = tempPosition1.length();
@@ -747,18 +840,17 @@ app.controller('mainCtrl', ['$scope',
 
 
 }());
-function findPinchingFingerType(hand){
+
+function findPinchingFingerType(hand) {
     var pincher;
     var closest = 500;
-    for(var f = 1; f < 5; f++)
-    {
+    for (var f = 1; f < 5; f++) {
         current = hand.fingers[f];
         distance = Leap.vec3.distance(hand.thumb.tipPosition, current.tipPosition);
-        if(current != hand.thumb && distance < closest)
-        {
+        if (current != hand.thumb && distance < closest) {
             closest = distance;
-            pincher = current; 
+            pincher = current;
         }
-    } 
+    }
     return pincher;
 }
