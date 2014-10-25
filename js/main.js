@@ -9,7 +9,7 @@ function init() {
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
 
-    OAuth.initialize('oEcDIQahkO4TUAND-yTs-H6oY_M')
+    OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
     OAuth.popup('twitter').done(function(err, result) {
         console.log(err)
         console.log(result)
