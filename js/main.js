@@ -178,7 +178,6 @@ app.controller('mainCtrl', ['$scope',
                     false
                 );
 
-<<<<<<< HEAD
                 this.sketchLoop = function() {
                     var t3 = THREE;
                     var light = new t3.PointLight();
@@ -224,9 +223,6 @@ app.controller('mainCtrl', ['$scope',
                         }
                     };
                 };
-=======
-                this.sketchLoop = function() {};
->>>>>>> origin/Leap
 
                 //var mapElement = document.querySelector('div#basicMap');
 
@@ -439,22 +435,12 @@ app.controller('mainCtrl', ['$scope',
                 this.deviceManager.init();
                 this.mainLoop();
 
-<<<<<<< HEAD
                 /*$scope.$watch('sketch.getCode()', function(code) {
-=======
-                $scope.$watch('sketch.getCode()', function(code) {
->>>>>>> origin/Leap
                     this.riftSandbox.clearScene();
                     var _sketchLoop;
                     $scope.error = null;
                     try {
-<<<<<<< HEAD
                         var _sketchFunc = new Function('scene', '"use strict";\n' + code);
-=======
-                        /* jshint -W054 */
-                        var _sketchFunc = new Function('scene', '"use strict";\n' + code);
-                        /* jshint +W054 */
->>>>>>> origin/Leap
                         _sketchLoop = _sketchFunc(this.riftSandbox.scene);
                     } catch (err) {
                         $scope.error = err.toString();
@@ -463,11 +449,7 @@ app.controller('mainCtrl', ['$scope',
                         this.sketchLoop = _sketchLoop;
                     }
                     localStorage.setItem('autosave', code);
-<<<<<<< HEAD
                 }.bind(this));*/
-=======
-                }.bind(this));
->>>>>>> origin/Leap
             }
         ]);
 }());
