@@ -74,12 +74,14 @@ function init() {
             var lim = 10;
             var i = 0;
             $.forEach(data.photos.photo, function(k,v){
-                if(i > lim) break;
-
-                var src = "https://farm"+v.farm+".staticflickr.com/"+v.server+"/"+v.id+"_"+v.secret+"_o.png";
+                if(i < lim){
+var src = "https://farm"+v.farm+".staticflickr.com/"+v.server+"/"+v.id+"_"+v.secret+"_o.png";
 
                 $("#rotatingImages").append($(new Image()).attr('src', src));
 
+                }
+
+                
 
                 i++;
 
