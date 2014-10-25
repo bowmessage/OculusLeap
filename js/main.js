@@ -10,6 +10,7 @@ function init() {
     map.setCenter(position, zoom);
 
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58');
+    console.log("initt'd")
     OAuth.popup("twitter").done(function(result) { //OAuth.io provider
         console.log(result)
     })
