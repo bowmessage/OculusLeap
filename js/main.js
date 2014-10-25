@@ -52,7 +52,7 @@ function init() {
         "featureselected": display
     });
 
-    map.addLayer(pois);
+    
 
     function display(event) {
         $("#namesdiv").empty();
@@ -65,8 +65,7 @@ function init() {
 
 
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
-    OAuth.popup('twitter', {}, function(err, result) {
-        console.log(err)
+    OAuth.popup('twitter', {}, function(result) {
         console.log(result)
         result.get('/1.1/search/tweets.json?q=hack&geocode=37.781157,-122.398720,100mi').done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
@@ -98,6 +97,7 @@ function init() {
 
 
             pois.addFeatures(features);
+            map.addLayer(pois);
         })
         // do some stuff with result
     })
