@@ -1,5 +1,5 @@
 var hasOAUTH = false;
-var allImg;
+var allImg = [];
 function shuffle(array) {
     var counter = array.length, temp, index;
 
