@@ -178,7 +178,51 @@ app.controller('mainCtrl', ['$scope',
                     false
                 );
 
-                this.sketchLoop = function() {};
+                this.sketchLoop = function() {
+                    var t3 = THREE;
+                    var light = new t3.PointLight();
+                    light.position.set(10, 15, 9);
+                    scene.add(light);
+                    var makeCube = function(x, y, z) {
+                        var cube = new t3.Mesh(
+                            new t3.BoxGeometry(1, 1.1, 1),
+                            new t3.MeshLambertMaterial({
+                                color: 'red'
+                            })
+                        );
+                        cube.scale.set(0.1, 0.1, 0.1);
+                        cube.position.set(1, 0, -1).add(
+                            new t3.Vector3(x, y, z));
+                        scene.add(cube);
+                        return cube;
+                    };
+
+                    var rows, cols, cubes = [],
+                        spacing = 0.07;
+                    rows = cols = 18;
+                    for (var r = 0; r < rows; r++) {
+                        for (var c = 0; c < cols; c++) {
+                            if (c === 0) {
+                                cubes[r] = [];
+                            }
+                            cubes[r][c] = makeCube(r * spacing, 0, c * spacing);
+                        }
+                    }
+                    var i = 0;
+                    return function() {
+                        i += -0.05;
+                        for (var r = 0; r < rows; r++) {
+                            for (var c = 0; c < cols; c++) {
+                                var height = (
+                                    Math.sin(r / rows * Math.PI * 2 + i) +
+                                    Math.cos(c / cols * Math.PI * 2 + i));
+                                cubes[r][c].position.setY(height / 12 + 0.6);
+                                cubes[r][c].material.color.setRGB(
+                                    height + 1.0, height + 0.5, 0.5);
+                            }
+                        }
+                    };
+                };
 
                 //var mapElement = document.querySelector('div#basicMap');
 
@@ -391,14 +435,12 @@ app.controller('mainCtrl', ['$scope',
                 this.deviceManager.init();
                 this.mainLoop();
 
-                $scope.$watch('sketch.getCode()', function(code) {
+                /*$scope.$watch('sketch.getCode()', function(code) {
                     this.riftSandbox.clearScene();
                     var _sketchLoop;
                     $scope.error = null;
                     try {
-                        /* jshint -W054 */
                         var _sketchFunc = new Function('scene', '"use strict";\n' + code);
-                        /* jshint +W054 */
                         _sketchLoop = _sketchFunc(this.riftSandbox.scene);
                     } catch (err) {
                         $scope.error = err.toString();
@@ -407,7 +449,7 @@ app.controller('mainCtrl', ['$scope',
                         this.sketchLoop = _sketchLoop;
                     }
                     localStorage.setItem('autosave', code);
-                }.bind(this));
+                }.bind(this));*/
             }
         ]);
 }());
