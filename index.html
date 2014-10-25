@@ -17,10 +17,11 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-sanitize.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
-    <script type="text/javascript" src="js/ng-twitter.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-resource.js"></script>
+    
     
 
-
+    <script src="lib/oauth.min.js"></script>
     <script src="lib/less-1.3.3.min.js"></script>
     <script src="lib/ThreeJS/Three.js"></script>
     <script src="lib/mousetrap.js"> </script>
@@ -39,7 +40,7 @@
       <!--<div tweets hashtag="hashtag" button="true" count="15" refresh="60"></div>-->
       <div ng-controller="SketchController">
         <div id="container" ng-class="{'not-fullscreen': !isInfullscreen}">
-        
+          <div>{{tweets}}</div>
           <canvas id="viewer"></canvas>
           <div id="camera" class="threed" ng-show="is_editor_visible">
             <!--<textarea
