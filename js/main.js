@@ -67,7 +67,7 @@ function init() {
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
     OAuth.popup('flickr', {}, function(error, result) {
         console.log(result)
-        result.get({url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
+        result.get({url: 'https://api.flickr.com/services/rest/?method=flickr.photos.search',
             data: {
                 bbox: "-30,-30,-8,-8"
             }
