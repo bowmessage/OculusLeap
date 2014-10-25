@@ -54,6 +54,14 @@ function init() {
 
     map.addLayer(pois);
 
+    function display(event) {
+        $("#namesdiv").empty();
+        console.log(event.feature.cluster);
+        $.each(event.feature.cluster, function(k, v) {
+            $("#namesdiv").append("<div>" + v.data.schoolName + "</div>");
+        });
+
+    }
 
 
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
