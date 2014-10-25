@@ -70,8 +70,7 @@ function init() {
         result.get({url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
             data: {
                 text: "flower",
-                format: "json",
-                nojsoncallback: 1
+                bbox: "-30,-30,-8,-8"
             }
         }).done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
