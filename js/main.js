@@ -9,17 +9,87 @@ function init() {
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
 
+    var style = new OpenLayers.Style({
+        pointRadius: "${radius}",
+        fillColor: "#ffcc66",
+        fillOpacity: 0.8,
+        strokeColor: "#cc6633",
+        strokeWidth: 2,
+        strokeOpacity: 0.8
+    }, {
+        context: {
+            radius: function(feature) {
+                //return 3;
+                //Todo change this to the number of posts or somethin
+                return Math.min(feature.attributes.count, 7) + 3;
+            }
+        }
+    });
+
+    var pois = new OpenLayers.Layer.Vector("My Points", {
+        strategies: [
+            new OpenLayers.Strategy.Cluster({
+                distance: 15
+            })
+        ],
+        styleMap: new OpenLayers.StyleMap({
+            "default": style,
+            "select": {
+                fillColor: "#8aeeef",
+                strokeColor: "#32a8a9"
+            }
+        })
+
+    });
+    var select = new OpenLayers.Control.SelectFeature(
+        pois, {
+            hover: true
+        }
+    );
+    map.addControl(select);
+    select.activate();
+    pois.events.on({
+        "featureselected": display
+    });
+
+    map.addLayer(pois);
+
+
+
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
     OAuth.popup('twitter', {}, function(err, result) {
         console.log(err)
         console.log(result)
-        result.get('/1.1/search/tweets.json?q=hack').done(function(data) {
+        result.get('/1.1/search/tweets.json?q=hack&geocode=37.781157,-122.398720,100mi').done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
             //var content = template({
             //    statuses: data.statuses
             //})
             //$('#search-res').html(content)
+
+
             console.log(data)
+
+            var features = [];
+            var i;
+            for (i = 0; i < data.length; i++) {
+                var val = data[i];
+                var pt = new OpenLayers.Geometry.Point(val.lon, val.lat);
+                pt.transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    new OpenLayers.Projection("EPSG:900913")
+                );
+                features.push(
+                    new OpenLayers.Feature.Vector(
+                        pt, {
+                            text: val.text
+                        }
+                    )
+                );
+            }
+
+
+            pois.addFeatures(features);
         })
         // do some stuff with result
     })
