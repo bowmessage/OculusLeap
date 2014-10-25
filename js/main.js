@@ -65,9 +65,9 @@ function init() {
 
 
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
-    OAuth.popup('stream.twitter', {}, function(error, result) {
+    OAuth.popup('twitter', {}, function(error, result) {
         console.log(result)
-        result.get('/1.1/statuses/sample.json&locations=-180,-90,180,90').done(function(data) {
+        result.get('/1.1/search/tweets.json?q=hack&geocode=37.781157,-122.398720,100mi').done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
             //var content = template({
             //    statuses: data.statuses
