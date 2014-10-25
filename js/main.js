@@ -98,11 +98,7 @@ function init() {
                     )
                 );
             }
-
-
-            pois.addFeatures(features);
-            map.addLayer(pois);
-        })
+        }).error(function(err){console.log(err)})
         // do some stuff with result
     })
 }
