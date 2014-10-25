@@ -9,10 +9,10 @@ function init() {
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
 
-    OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58');
-    OAuth.popup("twitter").done(function(result) { //OAuth.io provider
-        console.log(result)
-    })
+    // OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58');
+    // OAuth.popup("twitter").done(function(result) { //OAuth.io provider
+    //     console.log(result)
+    // })
 }
 
 
@@ -420,6 +420,8 @@ app.controller('mainCtrl', ['$scope',
                 var pinchStartCameraTarget = new THREE.Vector3(0, 0, 0);
 
                 var pinching = false;
+                var zooming = false;
+                var startDistance;
                 var pinchStartPosition = new THREE.Vector3(0, 0, 0);
                 var pinchStartCameraPosition = new THREE.Vector3(0, 0, 0);
                 var pinchThreshold = 0.9;
@@ -532,7 +534,7 @@ app.controller('mainCtrl', ['$scope',
 
 
                     //// PINCHING //////////////
-                    if (frame.hands.length > 0) {
+                    if (frame.hands.length == 1) {
                         var hand = frame.hands[0];
                         
 
@@ -580,12 +582,52 @@ app.controller('mainCtrl', ['$scope',
 
                             window.map.moveByPx(-movementThisFrame.x, movementThisFrame.y);
 
-                            camera.lookAt(ct);
-                            cameraTarget.copy(ct);
+                            
                             //console.log("Setting camera target:" + movementThisFrame.x + ',' + movementThisFrame.y + ',' + movementThisFrame.z);
                         } else if (hand.pinchStrength <= pinchThreshold && pinching) {
                             pinching = false;
                             prevPosition = null;
+                        }
+                    }
+                    //ZOOMING
+                    else if(frame.hands.length == 2){
+                        var hand1 = frame.hands[0];
+                        var hand2 = frame.hands[1];
+
+                        if (hand1.pinchStrength > pinchThreshold && hand1.pinchStrength > pinchThreshold  && !zooming) {
+                            zooming = true;
+                            var finger1 = findPinchingFingerType(hand1);
+                            var finger2 = findPinchingFingerType(hand2);
+
+                            
+                            var tempPosition1 = new THREE.Vector3(0,0,0);
+                            tempPosition1.fromArray(finger1.dipPosition);
+                            var tempPosition2 = new THREE.Vector3(0,0,0);
+                            tempPosition1.sub(tempPosition2.fromArray(finger2.dipPosition));
+
+                            startDistance = tempPosition1.length();
+
+                            
+                        }
+                        else if (hand1.pinchStrength > pinchThreshold && hand1.pinchStrength > pinchThreshold  && zooming) {
+                            
+                            var finger1 = findPinchingFingerType(hand1);
+                            var finger2 = findPinchingFingerType(hand2);
+
+                            
+                            var tempPosition1 = new THREE.Vector3(0,0,0);
+                            tempPosition1.fromArray(finger1.dipPosition);
+                            var tempPosition2 = new THREE.Vector3(0,0,0);
+                            tempPosition1.sub(tempPosition2.fromArray(finger2.dipPosition));
+
+                            var newDistance = tempPosition1.length();
+
+                            var distanceOffset = newDistance - startDistance;
+
+                            console.log("Distance: " + distanceOffset);
+
+                            window.map.zoomTo(window.map.getZoom() + distanceOffset/150);
+
                         }
                     }
                 });
