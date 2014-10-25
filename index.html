@@ -40,7 +40,6 @@
       <!--<div tweets hashtag="hashtag" button="true" count="15" refresh="60"></div>-->
       <div ng-controller="SketchController">
         <div id="container" ng-class="{'not-fullscreen': !isInfullscreen}">
-          <div>{{tweets}}</div>
           <canvas id="viewer"></canvas>
           <div id="camera" class="threed" ng-show="is_editor_visible">
             <!--<textarea
