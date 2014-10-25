@@ -8,6 +8,7 @@ function init() {
 
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
+    map.events.register("moveend", map, setPhotos);
     /*
     var style = new OpenLayers.Style({
         pointRadius: "${radius}",
@@ -69,63 +70,9 @@ function init() {
         console.log(result)
 
 
-        $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox=-30%2C-30%2C-7%2C-7&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=d09942fbdb4fb123409e37331a909412", function(data){
-            console.log(data);
-            var lim = 7;
-            var i = 0;
-            $.each(data.photos.photo, function(k, v) {
-                if (i < lim) {
-                    var j = k+2;
-                    var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_b.jpg";
-                    $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('border', '1px solid black').css('transform', 'rotateY('+(j*35)+'deg) translate3d('+(Math.round(Math.sin(j*Math.PI/8)*800))+'px, -200px, '+(Math.round(Math.cos(j*Math.PI/8)*800))+'px) '));
-
-                }
+        setPhotos();
 
 
-
-                i++;
-
-            })
-        })
-
-        result.get({
-            url: 'http://api.flickr.com/services/rest/?method=flickr.photos.search',
-            data: {
-                bbox: "-20,-20,-5,-5",
-                has_geo: "1"
-            }
-        }).done(function(data) {
-            //var template = Handlebars.compile($('#entry-template').html())
-            //var content = template({
-            //    statuses: data.statuses
-            //})
-            //$('#search-res').html(content)
-            console.log('done!')
-
-            console.log(data)
-            /*
-            var features = [];
-            var i;
-            for (i = 0; i < data.statuses.length; i++) {
-                var val = data.statuses[i];
-                var pt = new OpenLayers.Geometry.Point(val.lon, val.lat);
-                pt.transform(
-                    new OpenLayers.Projection("EPSG:4326"),
-                    new OpenLayers.Projection("EPSG:900913")
-                );
-                features.push(
-                    new OpenLayers.Feature.Vector(
-                        pt, {
-                            text: val.text
-                        }
-                    )
-                );
-            }*/
-        }).error(function(err) {
-            console.log('err');
-            console.log(err)
-        })
-        // do some stuff with result
     })
 }
 
@@ -170,6 +117,28 @@ app.controller('mainCtrl', ['$scope',
         };
     }
 ]);
+
+function setPhotos(){
+    $("#rotatingImages").empty();
+    $.getJSON("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox=-30%2C-30%2C-7%2C-7&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=d09942fbdb4fb123409e37331a909412", function(data) {
+        console.log(data);
+        var lim = 7;
+        var i = 0;
+        $.each(data.photos.photo, function(k, v) {
+            if (i < lim) {
+                var j = k + 2;
+                var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_b.jpg";
+                $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('border', '1px solid black').css('transform', 'rotateY(' + (j * 35) + 'deg) translate3d(' + (Math.round(Math.sin(j * Math.PI / 8) * 800)) + 'px, -200px, ' + (Math.round(Math.cos(j * Math.PI / 8) * 800)) + 'px) '));
+
+            }
+
+
+
+            i++;
+
+        })
+    })
+}
 
 /* global angular, DeviceManager, RiftSandbox, Mousetrap */
 (function() {
