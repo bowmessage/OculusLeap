@@ -52,7 +52,7 @@ function init() {
         "featureselected": display
     });
 
-    
+
 
     function display(event) {
         $("#namesdiv").empty();
@@ -65,9 +65,9 @@ function init() {
 
 
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
-    OAuth.popup('twitter', {}, function(error, result) {
+    OAuth.popup('flickr', {}, function(error, result) {
         console.log(result)
-        result.get('/1.1/search/tweets.json?q=hack&geocode=37.781157,-122.398720,100mi').done(function(data) {
+        result.get('services/rest/?method=flickr.photos.search&api_key=a4dbe979f03ec20953a445250a5af87f&bbox=-10%2C-10%2C10%2C10&has_geo=1&format=json&nojsoncallback=1&auth_token=72157648555864100-757f7a945585930c&api_sig=321b7a97fac8d35781d95ad69b1e066a').done(function(data) {
             //var template = Handlebars.compile($('#entry-template').html())
             //var content = template({
             //    statuses: data.statuses
