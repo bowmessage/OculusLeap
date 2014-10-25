@@ -1,0 +1,84 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'c:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   'leapjs' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 warn package.json naive@ No repository field.
+5 warn package.json naive@ No README data
+6 verbose readDependencies using package.json deps
+7 verbose cache add [ 'leapjs@0.6.3', null ]
+8 verbose cache add name=undefined spec="leapjs@0.6.3" args=["leapjs@0.6.3",null]
+9 verbose parsed url { protocol: null,
+9 verbose parsed url   slashes: null,
+9 verbose parsed url   auth: null,
+9 verbose parsed url   host: null,
+9 verbose parsed url   port: null,
+9 verbose parsed url   hostname: null,
+9 verbose parsed url   hash: null,
+9 verbose parsed url   search: null,
+9 verbose parsed url   query: null,
+9 verbose parsed url   pathname: 'leapjs@0.6.3',
+9 verbose parsed url   path: 'leapjs@0.6.3',
+9 verbose parsed url   href: 'leapjs@0.6.3' }
+10 verbose cache add name="leapjs" spec="0.6.3" args=["leapjs","0.6.3"]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: '0.6.3',
+11 verbose parsed url   path: '0.6.3',
+11 verbose parsed url   href: '0.6.3' }
+12 verbose addNamed [ 'leapjs', '0.6.3' ]
+13 verbose addNamed [ '0.6.3', '0.6.3' ]
+14 silly lockFile f0280d85-leapjs-0-6-3 leapjs@0.6.3
+15 verbose lock leapjs@0.6.3 C:\Users\Cuong\AppData\Roaming\npm-cache\f0280d85-leapjs-0-6-3.lock
+16 verbose request where is /leapjs
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 0797dc031485b8ad
+19 verbose url raw /leapjs
+20 verbose url resolving [ 'https://registry.npmjs.org/', './leapjs' ]
+21 verbose url resolved https://registry.npmjs.org/leapjs
+22 verbose request where is https://registry.npmjs.org/leapjs
+23 info trying registry request attempt 1 at 23:29:38
+24 verbose etag "CUO8PWE1G1PSDDFBU70YQX0GO"
+25 http GET https://registry.npmjs.org/leapjs
+26 http 304 https://registry.npmjs.org/leapjs
+27 silly registry.get cb [ 304,
+27 silly registry.get   { date: 'Sat, 25 Oct 2014 04:29:52 GMT',
+27 silly registry.get     server: 'Apache',
+27 silly registry.get     via: '1.1 varnish',
+27 silly registry.get     'last-modified': 'Sat, 25 Oct 2014 04:29:53 GMT',
+27 silly registry.get     'cache-control': 'max-age=60',
+27 silly registry.get     etag: '"CUO8PWE1G1PSDDFBU70YQX0GO"',
+27 silly registry.get     age: '0',
+27 silly registry.get     'x-served-by': 'cache-dfw1825-DFW',
+27 silly registry.get     'x-cache': 'MISS',
+27 silly registry.get     'x-cache-hits': '0',
+27 silly registry.get     'x-timer': 'S1414211392.911831,VS0,VE186',
+27 silly registry.get     vary: 'Accept',
+27 silly registry.get     'content-length': '0',
+27 silly registry.get     'keep-alive': 'timeout=10, max=50',
+27 silly registry.get     connection: 'Keep-Alive' } ]
+28 verbose etag https://registry.npmjs.org/leapjs from cache
+29 silly lockFile f0280d85-leapjs-0-6-3 leapjs@0.6.3
+30 silly lockFile f0280d85-leapjs-0-6-3 leapjs@0.6.3
+31 error Error: version not found: leapjs@0.6.3
+31 error     at c:\Program Files\nodejs\node_modules\npm\lib\cache\add-named.js:125:12
+31 error     at saved (c:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\get.js:167:7)
+31 error     at Object.oncomplete (fs.js:107:15)
+32 error If you need help, you may report this *entire* log,
+32 error including the npm and node versions, at:
+32 error     <http://github.com/npm/npm/issues>
+33 error System Windows_NT 6.1.7601
+34 error command "c:\\Program Files\\nodejs\\node.exe" "c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "leapjs"
+35 error cwd c:\Users\Cuong\GitHub\OculusLeap\leap
+36 error node -v v0.10.32
+37 error npm -v 1.4.28
+38 verbose exit [ 1, true ]
