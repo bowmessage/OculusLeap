@@ -9,10 +9,10 @@ function init() {
     map.addLayer(mapnik);
     map.setCenter(position, zoom);
 
-    // OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58');
-    // OAuth.popup("twitter").done(function(result) { //OAuth.io provider
-    //     console.log(result)
-    // })
+    OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58');
+    OAuth.popup("twitter").done(function(result) { //OAuth.io provider
+        console.log(result)
+    })
 }
 
 
