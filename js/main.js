@@ -75,7 +75,7 @@ function init() {
             var i = 0;
             $.each(data.photos.photo, function(k, v) {
                 if (i < lim) {
-                    var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_o.png";
+                    var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_m.png";
 
                     $("#rotatingImages").append($(new Image()).attr('src', src));
 
