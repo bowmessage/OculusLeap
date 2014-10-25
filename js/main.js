@@ -10,17 +10,17 @@ function init() {
     map.setCenter(position, zoom);
 
     OAuth.initialize('AlrP4jjCIXkqVpJE_tZxvuqsF58')
-    OAuth.popup('twitter').done(function(err, result) {
+    OAuth.popup('twitter', {}, function(err, result) {
         console.log(err)
         console.log(result)
         result.get('/1.1/search/tweets.json?q=hack').done(function(data) {
-                //var template = Handlebars.compile($('#entry-template').html())
-                //var content = template({
-                //    statuses: data.statuses
-                //})
-                //$('#search-res').html(content)
-                console.log(data)
-            })
+            //var template = Handlebars.compile($('#entry-template').html())
+            //var content = template({
+            //    statuses: data.statuses
+            //})
+            //$('#search-res').html(content)
+            console.log(data)
+        })
         // do some stuff with result
     })
 }
