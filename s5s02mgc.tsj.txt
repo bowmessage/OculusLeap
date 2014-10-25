@@ -1,0 +1,18 @@
+﻿Revert "asvdsadv"
+
+This reverts commit 69cbc876c17997c2e802dd6cd15b65f5a1181fad.
+
+Conflicts:
+	js/main.js
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# You are currently reverting commit 69cbc87.
+#
+# Changes to be committed:
+#	modified:   js/main.js
+#
+

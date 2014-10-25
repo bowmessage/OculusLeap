@@ -1,3 +1,4 @@
+var allImg = [];
 function init() {
     window.map = new OpenLayers.Map("basicMap");
     var mapnik = new OpenLayers.Layer.OSM();
@@ -127,7 +128,9 @@ function setPhotos() {
         $.each(data.photos.photo, function(k, v) {
             if (i < lim) {
                 var j = k + 2;
-                var src = "https://farm" + v.farm + ".staticflickr.com/" + v.server + "/" + v.id + "_" + v.secret + "_b.jpg";
+                var z = k + Math.round(Math.random() * 60)
+                var newV = data.photos.photo[z];
+                var src = "https://farm" + newV.farm + ".staticflickr.com/" + newV.server + "/" + newV.id + "_" + newV.secret + "_b.jpg";
                 $("#rotatingImages").append($(new Image()).attr('src', src).attr('class', 'threed').css('border', '1px solid black').css('transform', 'rotateY(' + (j * 35) + 'deg) translate3d(' + (Math.round(Math.sin(j * Math.PI / 8) * 800)) + 'px, -200px, ' + (Math.round(Math.cos(j * Math.PI / 8) * 800)) + 'px) '));
 
             }
