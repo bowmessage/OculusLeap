@@ -672,7 +672,9 @@ function setPhotos() {
                                 //console.log("Setting camera target:" + movementThisFrame.x + ',' + movementThisFrame.y + ',' + movementThisFrame.z);
                             } else if (hand.pinchStrength <= pinchThreshold && pinching) {
                                 pinching = false;
+
                                 prevPosition = null;
+                                setPhotos();
                             }
                         }
                         //ZOOMING
